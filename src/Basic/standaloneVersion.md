@@ -1,0 +1,6 @@
+- no channel
+- no goroutine
+- Data interaction
+    - Request slice : task queue(任务队列)
+    - parser add Requests to Request slice
+    - inner engine: pop out Request from Request slice to parse in a forever loop
