@@ -1,4 +1,4 @@
-package main
+package maze
 
 import (
 	"fmt"
@@ -29,23 +29,6 @@ func (p point) in(grid [][]int) (val int, in bool) {
 		return 0, false
 	}
 	return grid[p.i][p.j], true
-}
-
-func main() {
-	m := readMaze("GoAlgorithm/maze/maze.in")
-	fmt.Println(m)
-	steps := walk(m, point{
-		0, 0,
-	}, point{
-		len(m) - 1,
-		len(m[0]) - 1,
-	})
-	for _, row := range steps {
-		for _, val := range row {
-			fmt.Printf("%3d", val)
-		}
-		fmt.Println()
-	}
 }
 
 func walk(m [][]int, start_point point, end_point point) [][]int {

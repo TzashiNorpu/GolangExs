@@ -1,10 +1,6 @@
-package main
+package parenthese
 
 import "fmt"
-
-func main() {
-	genarateP(0, 0, 3, "")
-}
 
 func genarateP(left int, right int, len int, res string) {
 	if left == len && right == len {
