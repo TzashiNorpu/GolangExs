@@ -2,8 +2,8 @@ package bst
 
 import "fmt"
 
-type BST struct {
-	Node *Node
+type bst struct {
+	node *Node
 	size int
 }
 type Node struct {
@@ -11,19 +11,19 @@ type Node struct {
 	Left, Right *Node
 }
 
-func (b *BST) IsEmpty() bool {
+func (b *bst) IsEmpty() bool {
 	return b.size-1 == 0
 }
 
-func (b *BST) Add(node Node) {
-	b.add1(b.Node, node)
-	//b.Node = b.add2(b.Node, node)
+func (b *bst) Add(node Node) {
+	b.add1(b.node, node)
+	//b.node = b.add2(b.node, node)
 }
 
-func (b *BST) add1(root *Node, node Node) {
+func (b *bst) add1(root *Node, node Node) {
 	if root == nil {
 		b.size++
-		b.Node = &node
+		b.node = &node
 		//nil 传递只能进行复制，不能修改外部的变量
 		//root = node
 		return
@@ -48,7 +48,7 @@ func (b *BST) add1(root *Node, node Node) {
 	}
 }
 
-func (b *BST) add2(root *Node, node Node) *Node {
+func (b *bst) add2(root *Node, node Node) *Node {
 	if root == nil {
 		b.size++
 		return &node
@@ -61,12 +61,12 @@ func (b *BST) add2(root *Node, node Node) *Node {
 	return root
 }
 
-func (b *BST) Size() int {
+func (b *bst) Size() int {
 	return b.size + 1
 }
 
-func (b *BST) Contains(node Node) bool {
-	return contains(b.Node, node)
+func (b *bst) Contains(node Node) bool {
+	return contains(b.node, node)
 }
 
 func contains(root *Node, n Node) bool {
@@ -82,8 +82,8 @@ func contains(root *Node, n Node) bool {
 	}
 }
 
-func (b *BST) PreOrder() {
-	preOrder(b.Node)
+func (b *bst) PreOrder() {
+	preOrder(b.node)
 }
 
 func preOrder(node *Node) {
@@ -96,8 +96,8 @@ func preOrder(node *Node) {
 	}
 }
 
-func (b *BST) InOrder() {
-	inOrder(b.Node)
+func (b *bst) InOrder() {
+	inOrder(b.node)
 }
 
 func inOrder(node *Node) {
@@ -110,8 +110,8 @@ func inOrder(node *Node) {
 	}
 }
 
-func (b *BST) PostOrder() {
-	postOrder(b.Node)
+func (b *bst) PostOrder() {
+	postOrder(b.node)
 }
 
 func postOrder(node *Node) {
@@ -124,9 +124,113 @@ func postOrder(node *Node) {
 	fmt.Println(node.Val)
 }
 
-func BSTGen() *BST {
-	return &BST{
-		Node: nil,
+func (b *bst) LevelTraverse() {
+	levelTraverse(b.node)
+}
+
+func levelTraverse(node *Node) {
+	if node == nil {
+		return
+	}
+	var stack []*Node
+	stack = append(stack, node)
+	for len(stack) > 0 {
+		curNode := stack[0]
+		fmt.Println(curNode.Val)
+		stack = stack[1:]
+		if curNode.Left != nil {
+			stack = append(stack, curNode.Left)
+		}
+		if curNode.Right != nil {
+			stack = append(stack, curNode.Right)
+		}
+	}
+}
+
+func (b *bst) GetMin() *Node {
+	return getMin(b.node)
+}
+
+func getMin(node *Node) *Node {
+	if node.Left == nil {
+		return node
+	}
+	return getMin(node.Left)
+}
+
+func (b *bst) GetMax() *Node {
+	return getMax(b.node)
+}
+
+func getMax(node *Node) *Node {
+	if node.Right == nil {
+		return node
+	}
+	return getMax(node.Right)
+}
+
+func (b *bst) DelMin() *Node {
+	return b.delMin(b.node)
+}
+
+func (b *bst) delMin(node *Node) *Node {
+	if node.Left == nil {
+		b.size--
+		return node.Right
+	}
+	node.Left = b.delMin(node.Left)
+	return node
+}
+
+func (b *bst) DelMax() *Node {
+	return b.delMax(b.node)
+}
+
+func (b *bst) delMax(node *Node) *Node {
+	if node.Right == nil {
+		b.size--
+		return node.Left
+	}
+	node.Right = b.delMax(node.Right)
+	return node
+}
+
+func (b *bst) DelNode(node Node) *Node {
+	return b.delNode(b.node, node)
+}
+
+func (b *bst) delNode(root *Node, node Node) *Node {
+
+	if root == nil {
+		return nil
+	}
+	if node.Val == root.Val {
+		if root.Left == nil {
+			b.size--
+			return root.Right
+		} else if root.Right == nil {
+			b.size--
+			return root.Left
+		} else {
+			successor := getMin(root.Right)
+			sub := b.delMin(root.Right)
+			successor.Right = sub
+			successor.Left = root.Left
+			return successor
+		}
+	}
+	if node.Val < root.Val {
+		root.Left = b.delNode(root.Left, node)
+	}
+	if node.Val > root.Val {
+		root.Right = b.delNode(root.Right, node)
+	}
+	return root
+}
+
+func BSTGen() *bst {
+	return &bst{
+		node: nil,
 		size: 0,
 	}
 }
