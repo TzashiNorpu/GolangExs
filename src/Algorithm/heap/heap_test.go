@@ -8,7 +8,6 @@ import (
 
 func TestHeap(t *testing.T) {
 	heap := GetMaxHeap()
-
 	n := 1000000
 	for i := 0; i < n; i++ {
 		item := rand.Intn(n)
@@ -32,4 +31,14 @@ func TestHeap(t *testing.T) {
 		}
 	}
 	fmt.Println("testing success")
+	h2 := GetMaxHeap()
+	arr := []int{60, 40, 50, 70, 10, 20}
+	h2.Heapfy(&arr)
+
+	fmt.Println(h2.RemoveMax())
+	fmt.Println(h2.RemoveMax())
+	fmt.Println(h2.RemoveMax())
+	fmt.Println(h2.RemoveMax())
+	fmt.Println(h2.RemoveMax())
+	fmt.Println(h2.RemoveMax())
 }

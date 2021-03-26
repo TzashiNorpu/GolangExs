@@ -1,12 +1,8 @@
-package test1
+package lt83
 
-import (
-	"fmt"
-	"golang/Algorithm/list"
-)
-
-func deleteDuplicates(head *list.ListNode) *list.ListNode {
-	dummyHead1 := &list.ListNode{Next: head}
+/*
+func deleteDuplicates(head *list2.listNode) *list2.listNode {
+	dummyHead1 := &list2.listNode{Next: head}
 	m := make(map[int]int)
 	for dummyHead1.Next != nil {
 		m[dummyHead1.Next.Val] = m[dummyHead1.Next.Val] + 1
@@ -15,13 +11,15 @@ func deleteDuplicates(head *list.ListNode) *list.ListNode {
 	for k, v := range m {
 		fmt.Printf("key=%d,value=%d\n", k, v)
 	}
-	dummyHead2 := &list.ListNode{Next: head}
+	dummyHead2 := &list2.listNode{Next: head}
 	for dummyHead2.Next != nil {
 		if m[dummyHead2.Next.Val] > 1 {
-			dummyHead2.Next = dummyHead2.Next.Next
+			list2.DelListNode(dummyHead2, dummyHead2.Next)
+			m[dummyHead2.Next.Val]--
+			continue
 		}
 		dummyHead2 = dummyHead2.Next
 	}
-
-	return dummyHead2
+	return dummyHead2.Next
 }
+*/
