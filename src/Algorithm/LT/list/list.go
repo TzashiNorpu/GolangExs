@@ -7,18 +7,18 @@ import (
 
 type LinkedList struct {
 	size int
-	node *ListNode
+	Node *ListNode
 }
 
 type ListNode struct {
 	Val  int
-	next *ListNode
+	Next *ListNode
 }
 
 func GenLinkedListByInts(ints []int) *LinkedList {
 	return &LinkedList{
 		size: len(ints),
-		node: genLinkedListByInts(ints, 0),
+		Node: genLinkedListByInts(ints, 0),
 	}
 }
 func genLinkedListByInts(ints []int, level int) *ListNode {
@@ -26,19 +26,19 @@ func genLinkedListByInts(ints []int, level int) *ListNode {
 		return &ListNode{Val: ints[level]}
 	}
 	curr := ListNode{Val: ints[level]}
-	curr.next = genLinkedListByInts(ints, level+1)
+	curr.Next = genLinkedListByInts(ints, level+1)
 	return &curr
 }
 
 func DelListNode(curr *ListNode, delNode *ListNode) {
-	curr.next = delNode.next
+	curr.Next = delNode.Next
 }
 
 func (l *LinkedList) AddFirst(n ListNode) *LinkedList {
-	dummyHead := ListNode{next: l.node}
-	n.next = dummyHead.next
-	dummyHead.next = &n
-	l.node = dummyHead.next
+	dummyHead := ListNode{Next: l.Node}
+	n.Next = dummyHead.Next
+	dummyHead.Next = &n
+	l.Node = dummyHead.Next
 	l.size++
 	return l
 }
@@ -47,44 +47,59 @@ func (l *LinkedList) AddNth(index int, n ListNode) *LinkedList {
 	if index < 0 || index > l.size {
 		panic("Index out of range")
 	}
-	dummyHead := &ListNode{next: l.node}
+	dummyHead := &ListNode{Next: l.Node}
 	prev := dummyHead
 	for i := 0; i < index; i++ {
-		prev = prev.next
+		prev = prev.Next
 	}
-	n.next = prev.next
-	prev.next = &n
+	n.Next = prev.Next
+	prev.Next = &n
 	l.size++
 	return l
 }
 
 func (l *LinkedList) Traverse() {
 	s := ""
-	dummyHead := &ListNode{next: l.node}
-	for dummyHead.next != nil {
-		s = s + "->" + strconv.Itoa(dummyHead.next.Val)
-		dummyHead.next = dummyHead.next.next
+	dummyHead := &ListNode{Next: l.Node}
+	for dummyHead.Next != nil {
+		s = s + strconv.Itoa(dummyHead.Next.Val) + "->"
+		dummyHead.Next = dummyHead.Next.Next
 	}
-	fmt.Println(s + "->nil")
+	fmt.Println(s + "nil")
 }
 
-func (l *LinkedList) DelNthNode(index int) {
-	for {
-
+func (l *LinkedList) DelNthNode(index int) *LinkedList {
+	dummyHead := &ListNode{Next: l.Node}
+	prev := dummyHead
+	for i := 0; i < index; i++ {
+		prev = prev.Next
 	}
+	delNode := prev.Next
+	prev.Next = delNode.Next
+	delNode.Next = nil
+	l.size--
+	return &LinkedList{Node: dummyHead.Next, size: l.size}
 }
 
 func (l *LinkedList) DelSpecificValueNode(node ListNode) *LinkedList {
-	dummyHead := &ListNode{next: l.node}
-	curr := dummyHead.next
-	for curr != nil {
-		if curr.Val == node.Val {
-			dummyHead.next = curr.next
-			curr = curr.next
-			l.size--
+	head := l.Node
+	size := l.size
+	for head != nil && head.Val == node.Val {
+		head = head.Next
+		size--
+	}
+	if head == nil {
+		return &LinkedList{Node: nil, size: 0}
+	}
+	prev := head
+	for prev.Next != nil {
+		if prev.Next.Val == node.Val {
+			prev.Next = prev.Next.Next
+			size--
 		} else {
-			curr = curr.next
+			prev = prev.Next
 		}
 	}
-	return &LinkedList{node: dummyHead.next}
+
+	return &LinkedList{Node: head, size: size}
 }
