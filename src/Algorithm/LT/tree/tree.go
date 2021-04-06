@@ -5,7 +5,7 @@ import (
 )
 
 type TreeNode struct {
-	Val   int
+	Val   interface{}
 	Left  *TreeNode
 	Right *TreeNode
 }
@@ -31,10 +31,10 @@ type TreeNode struct {
 // i = 13 left 27 right  28
 // i = 14 left 29 right  30
 
-func GenTreesByArray(ints []int) *TreeNode {
+func GenTreesByArray(ints []interface{}) *TreeNode {
 	/*	left = 2^k - 1
 		right = 2^(k+1) - 2 */
-	nodeMap := make(map[int]*TreeNode)
+	nodeMap := make(map[interface{}]*TreeNode)
 	var node *TreeNode
 	for k, v := range ints {
 		node1, ok := nodeMap[k]
@@ -68,13 +68,14 @@ func preOrder(node *TreeNode) {
 	}
 }
 
-func inOrder(node *TreeNode) {
+func inOrder(node *TreeNode, f func(n interface{})) {
 	if node.Left != nil {
-		inOrder(node.Left)
+		inOrder(node.Left, f)
 	}
-	fmt.Println(node.Val)
+	f(node.Val)
+	//fmt.Println(node.Val)
 	if node.Right != nil {
-		inOrder(node.Right)
+		inOrder(node.Right, f)
 	}
 }
 
